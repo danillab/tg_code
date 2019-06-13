@@ -6,13 +6,12 @@ Use Docker, Flask and Telegram MTProto API: [Pyrogram](https://github.com/pyrogr
 ## Docker
 ```
 docker build -t tg_code .
-docker run -p 80:80 tg_code
+docker run -p 80:80 --name tg_code tg_code
 ```
 
 ## Auth
 ```
-docker ps # get CONTAINER_ID
-docker exec -it {CONTAINER_ID} python telega.py
+docker exec -it tg_code python telega.py
 >First name: Skip
 >Last name: Skip
 >Enter code: 12345
@@ -23,7 +22,7 @@ docker exec -it {CONTAINER_ID} python telega.py
 
 Get code from console:
 ```
-docker exec -it {CONTAINER_ID} python telega.py
+docker exec -it tg_code python telega.py
 ```
 
 Get code from web:
