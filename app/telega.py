@@ -1,3 +1,4 @@
+import os
 import re
 from pyrogram import Client
 
@@ -5,8 +6,7 @@ from pyrogram import Client
 api_id = 12345
 api_hash = "b1b1b1b1b1b1bb1b1b1b1b1bb1b1b1b1"
 phone_number = '+79998887766'
-DEBUG = 1
-CHAT_ID = 777000
+DEBUG = 0
 
 
 def phone_code_callback(x):
@@ -31,23 +31,25 @@ def get_code():
                 print(dialog.chat.id, dialog.chat.type, [dialog.chat.title, dialog.chat.username, dialog.chat.first_name])
                 print('\t', dialog.top_message.message_id, dialog.top_message.date, dialog.top_message.text)
 
-    ret = app.get_history(CHAT_ID, limit=10)
+    ret = app.get_history(777000, limit=10)
 
     for message in ret.messages:
-        m = re.search(r'(?:Код подтверждения|Your login code): (\d+)', message.text)
+        m = re.search(r'(?:Код подтверждения|Login code|Your login code): (\d+)', message.text)
         if m:
             code = m.group(1)
-            app.stop()
-            return {
+            ret = {
                 'message_id': message.message_id,
                 'date': message.date,
                 'first_name': message.from_user.first_name,
                 'text': message.text,
                 'code': code,
             }
+            print(str(ret))
+            app.stop()
 
-    return False
+    print('---END---')
+    os._exit(0)
 
 
 if __name__ == "__main__":
-    print(get_code())
+    get_code()
